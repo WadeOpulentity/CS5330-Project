@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Add Flight - Space Management System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add New Flight</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="flight_number" class="form-label">Flight Number</label>
+                        <input type="text" class="form-control" id="flight_number" name="flight_number" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Flight</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Flight Finder - Space Management System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Flight Finder</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="origin" class="form-label">Origin</label>
+                                <input type="text" class="form-control" id="origin" name="origin" placeholder="Enter origin...">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="destination" class="form-label">Destination</label>
+                                <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter destination...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="day_of_week" class="form-label">Day of Week</label>
+                                <select class="form-control" id="day_of_week" name="day_of_week">
+                                    <option value="">Any Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Find Flights</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+                </form>
+                
+                {% if itineraries %}
+                <div class="mt-4">
+                    <h6>Flight Itineraries:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Flight</th>
+                                    <th>Route</th>
+                                    <th>Departure</th>
+                                    <th>Arrival</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for itinerary in itineraries %}
+                                <tr>
+                                    <td>{{ itinerary.flight_number }}</td>
+                                    <td>{{ itinerary.route }}</td>
+                                    <td>{{ itinerary.departure_time }}</td>
+                                    <td>{{ itinerary.arrival_time }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
