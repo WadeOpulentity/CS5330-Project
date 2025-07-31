@@ -10,36 +10,65 @@
                 <h5>Route Query</h5>
             </div>
             <div class="card-body">
+                <p>Find all flights between two spaceports.</p>
+
                 <form method="POST">
-                    <div class="mb-3">
-                        <label for="query" class="form-label">Search Routes</label>
-                        <input type="text" class="form-control" id="query" name="query" placeholder="Enter search terms...">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="origin" class="form-label">Origin Spaceport</label>
+                            <select class="form-control" id="origin" name="origin">
+                                {% for port in spaceports %}
+                                    <option value="{{ port.id }}">{{ port.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="destination" class="form-label">Destination Spaceport</label>
+                            <select class="form-control" id="destination" name="destination">
+                                {% for port in spaceports %}
+                                    <option value="{{ port.id }}">{{ port.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Search</button>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
-                
-                {% if results %}
+
+                {% if flights %}
                 <div class="mt-4">
-                    <h6>Search Results:</h6>
+                    <h6>Flights on Selected Route:</h6>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
+                                    <th>Flight Number</th>
+                                    <th>Departure Day</th>
+                                    <th>Flight Time (hours)</th>
+                                    <th>Spacecraft</th>
+                                    <th>Capacity</th>
+                                    <th>Distance</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for result in results %}
+                                {% for flight in flights %}
                                 <tr>
-                                    <td>{{ result.id }}</td>
-                                    <td>{{ result.name }}</td>
+                                    <td>{{ flight.flight_number }}</td>
+                                    <td>{{ flight.departs_on_day }}</td>
+                                    <td>{{ flight.flight_time }}</td>
+                                    <td>{{ flight.spacecraft_type }}</td>
+                                    <td>{{ flight.spacecraft_capacity }}</td>
+                                    <td>{{ flight.distance }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+                </div>
+                {% elif request.method == 'POST' %}
+                <div class="mt-4">
+                    <p>No flights found for the selected route.</p>
                 </div>
                 {% endif %}
             </div>
