@@ -14,30 +14,42 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="origin" class="form-label">Origin</label>
-                                <input type="text" class="form-control" id="origin" name="origin" placeholder="Enter origin...">
+                                <label for="origin" class="form-label">Origin Spaceport</label>
+                                <select class="form-control" id="origin" name="origin" required>
+                                    <option value="">Choose origin spaceport...</option>
+                                    {% for spaceport in spaceports %}
+                                        <option value="{{ spaceport.name }}">{{ spaceport.name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="destination" class="form-label">Destination</label>
-                                <input type="text" class="form-control" id="destination" name="destination" placeholder="Enter destination...">
+                                <label for="destination" class="form-label">Destination Spaceport</label>
+                                <select class="form-control" id="destination" name="destination" required>
+                                    <option value="">Choose destination spaceport...</option>
+                                    {% for spaceport in spaceports %}
+                                        <option value="{{ spaceport.name }}">{{ spaceport.name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="day_of_week" class="form-label">Day of Week</label>
-                                <select class="form-control" id="day_of_week" name="day_of_week">
-                                    <option value="">Any Day</option>
-                                    <option value="Monday">Monday</option>
-                                    <option value="Tuesday">Tuesday</option>
-                                    <option value="Wednesday">Wednesday</option>
-                                    <option value="Thursday">Thursday</option>
-                                    <option value="Friday">Friday</option>
-                                    <option value="Saturday">Saturday</option>
-                                    <option value="Sunday">Sunday</option>
+                                <label for="date" class="form-label">Travel Date</label>
+                                <input type="date" class="form-control" id="date" name="date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="max_stops" class="form-label">Max Stops</label>
+                                <select class="form-control" id="max_stops" name="max_stops">
+                                    <option value="0">Direct flights only</option>
+                                    <option value="1">Up to 1 stop</option>
+                                    <option value="2">Up to 2 stops</option>
+                                    <option value="3">Up to 3 stops</option>
                                 </select>
                             </div>
                         </div>
@@ -46,9 +58,10 @@
                     <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
                 
-                {% if itineraries %}
+                {% if searched %}
                 <div class="mt-4">
-                    <h6>Flight Itineraries:</h6>
+                    <h6>Flight Results:</h6>
+                    {% if itineraries %}
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -56,7 +69,9 @@
                                     <th>Flight</th>
                                     <th>Route</th>
                                     <th>Departure</th>
-                                    <th>Arrival</th>
+                                    <th>Duration</th>
+                                    <th>Aircraft</th>
+                                    <th>Day</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,11 +81,16 @@
                                     <td>{{ itinerary.route }}</td>
                                     <td>{{ itinerary.departure_time }}</td>
                                     <td>{{ itinerary.arrival_time }}</td>
+                                    <td>{{ itinerary.aircraft }}</td>
+                                    <td>{{ itinerary.day_of_week }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+                    {% else %}
+                    <p style="color: #6c757d; font-style: italic;">No flights found between the selected spaceports on the specified date.</p>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

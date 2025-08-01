@@ -4,21 +4,52 @@
 <div class="section">
     <h2>Data Entry</h2>
     <ul>
-        <li><a href="#" class="disabled">Add Planet (TODO)</a></li>
-        <li><a href="#" class="disabled">Add Space Station (TODO)</a></li>
-        <li><a href="#" class="disabled">Add Spaceport (TODO)</a></li>
-        <li><a href="#" class="disabled">Add Route (TODO)</a></li>
-        <li><a href="#" class="disabled">Add Spacecraft (TODO)</a></li>
-        <li><a href="#" class="disabled">Add Flight (TODO)</a></li>
+        <li><a href="{{ url_for('data_entry.add_planet') }}">Add Planet</a></li>
+        <li><a href="{{ url_for('data_entry.add_space_station') }}">Add Space Station</a></li>
+        <li><a href="{{ url_for('data_entry.add_spaceport') }}">Add Spaceport</a></li>
+        <li><a href="{{ url_for('data_entry.add_route') }}">Add Route</a></li>
+        <li><a href="{{ url_for('data_entry.add_spacecraft') }}">Add Spacecraft</a></li>
+        <li><a href="{{ url_for('data_entry.add_flight') }}">Add Flight</a></li>
     </ul>
 </div>
 
 <div class="section">
     <h2>Queries</h2>
     <ul>
-        <li><a href="#" class="disabled">Spaceport Query (TODO)</a></li>
+        <li><a href="{{ url_for('spaceport_queries.spaceport_query') }}">Spaceport Query</a></li>
         <li><a href="{{ url_for('route_queries.route_query') }}">Route Query</a></li>
-        <li><a href="#" class="disabled">Flight Finder (TODO)</a></li>
+        <li><a href="{{ url_for('flight_finder.flight_finder') }}">Flight Finder</a></li>
     </ul>
+</div>
+
+<!-- Upcoming Departures -->
+<div class="section">
+    <h2 style="color: black;">Upcoming Departures</h2>
+    {% if dashboard.upcoming_flights %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold; font-size: 14px;">
+            <tr>
+                <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Flight</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Route</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Departure</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Aircraft</th>
+                <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in dashboard.upcoming_flights %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px; font-weight: bold; color: #007bff;">{{ flight.flight_number }}</td>
+                <td style="padding: 10px;">{{ flight.origin }} → {{ flight.destination }}</td>
+                <td style="padding: 10px;">{{ flight.departure_time }}</td>
+                <td style="padding: 10px;">{{ flight.aircraft }}</td>
+                <td style="padding: 10px;">{{ flight.capacity }} seats</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: #6c757d; font-style: italic;">No upcoming flights available.</p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -12,11 +12,37 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Spaceport Name</label>
+                        <label for="name" class="form-label">Spaceport Name *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="planet_id" class="form-label">Planet (Optional)</label>
+                        <select class="form-control" id="planet_id" name="planet_id">
+                            <option value="">Not on a planet</option>
+                            {% for planet in planets %}
+                                <option value="{{ planet.id }}">{{ planet.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="station_id" class="form-label">Space Station (Optional)</label>
+                        <select class="form-control" id="station_id" name="station_id">
+                            <option value="">Not on a station</option>
+                            {% for station in stations %}
+                                <option value="{{ station.id }}">{{ station.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Daily Flight Capacity</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Max flights per day" min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fee_per_seat" class="form-label">Fee Per Seat ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="fee_per_seat" name="fee_per_seat" placeholder="0.00" min="0">
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Spaceport</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
             </div>
         </div>

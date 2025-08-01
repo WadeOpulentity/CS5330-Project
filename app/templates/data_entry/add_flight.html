@@ -12,11 +12,49 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="flight_number" class="form-label">Flight Number</label>
-                        <input type="text" class="form-control" id="flight_number" name="flight_number" required>
+                        <label for="flight_number" class="form-label">Flight Number *</label>
+                        <input type="text" class="form-control" id="flight_number" name="flight_number" placeholder="e.g., EL001, EM002" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="route_id" class="form-label">Route *</label>
+                        <select class="form-control" id="route_id" name="route_id" required>
+                            <option value="">Choose route...</option>
+                            {% for route in routes %}
+                                <option value="{{ route.id }}">{{ route.origin_name }} → {{ route.destination_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spacecraft_id" class="form-label">Spacecraft Type *</label>
+                        <select class="form-control" id="spacecraft_id" name="spacecraft_id" required>
+                            <option value="">Choose spacecraft...</option>
+                            {% for spacecraft in spacecraft_types %}
+                                <option value="{{ spacecraft.id }}">{{ spacecraft.type_name }} ({{ spacecraft.capacity }} seats)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="departure_time" class="form-label">Departure Time</label>
+                        <input type="time" class="form-control" id="departure_time" name="departure_time">
+                    </div>
+                    <div class="mb-3">
+                        <label for="flight_time_hours" class="form-label">Flight Duration (hours)</label>
+                        <input type="number" step="0.1" class="form-control" id="flight_time_hours" name="flight_time_hours" placeholder="e.g., 8.5" min="0.1" max="168">
+                    </div>
+                    <div class="mb-3">
+                        <label for="days_of_week" class="form-label">Days of Week *</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
+                            <label><input type="checkbox" name="days_of_week" value="Monday"> Monday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Tuesday"> Tuesday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Wednesday"> Wednesday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Thursday"> Thursday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Friday"> Friday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Saturday"> Saturday</label>
+                            <label><input type="checkbox" name="days_of_week" value="Sunday"> Sunday</label>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Flight</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
             </div>
         </div>

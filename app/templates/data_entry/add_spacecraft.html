@@ -12,11 +12,19 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Spacecraft Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <label for="type_name" class="form-label">Spacecraft Type Name *</label>
+                        <input type="text" class="form-control" id="type_name" name="type_name" placeholder="e.g., Shuttle Class, Cruiser Class" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Capacity (passengers)</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Enter passenger capacity" min="1" max="10000">
+                    </div>
+                    <div class="mb-3">
+                        <label for="range_km" class="form-label">Range (km)</label>
+                        <input type="number" class="form-control" id="range_km" name="range_km" placeholder="Enter maximum travel distance" min="1">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Spacecraft</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
             </div>
         </div>
