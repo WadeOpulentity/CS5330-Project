@@ -1,6 +1,6 @@
 # Project Responsibilities
 
-Here are the responsibilities GPT came up with. We can talk about who is doing what in meeting.
+Here are the responsibilities we came up with using GPT to try and make the work fair.
 
 ---
 
@@ -34,3 +34,10 @@ Here are the responsibilities GPT came up with. We can talk about who is doing w
 * **Primary Files**:
     * `app/modules/flight_finder/routes.py`
     * (will also add query functions to `app/models.py` or `app/utils.py`)
+
+---
+
+## Interface Notes
+* **System Requirements**: To make our demo ensure that we met all of the requirments we decided to have 2 sections of querying and a section for data entry. This ensures that we get full credit for the project.
+* **Additional Section (Realism)**: For a more realistic use case of our system, we creates a section that allows users to book flights. This section will allow users to select a flight and book it. 
+    
