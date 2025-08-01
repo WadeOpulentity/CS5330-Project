@@ -12,8 +12,12 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="query" class="form-label">Search Spaceports</label>
-                        <input type="text" class="form-control" id="query" name="query" placeholder="Enter search terms...">
+                        <label for="spaceport" class="form-label">Search Spaceports</label>
+                        <input type="text" class="form-control" id="spaceport" name="spaceport" placeholder="Enter spaceport">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Day of Week (Optional)</label>
+                        <input type="text" class="form-control" id="date" name="date" placeholder="Enter date">
                     </div>
                     <button type="submit" class="btn btn-primary">Search</button>
                     <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
