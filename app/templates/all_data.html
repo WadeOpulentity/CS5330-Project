@@ -15,7 +15,6 @@
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
             <tr>
-                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Size (km)</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Population</th>
@@ -24,7 +23,6 @@
         <tbody>
             {% for planet in data.planets %}
             <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 8px;">{{ planet.id }}</td>
                 <td style="padding: 8px; font-weight: bold;">{{ planet.name }}</td>
                 <td style="padding: 8px;">{{ "{:,}".format(planet.size) }}</td>
                 <td style="padding: 8px;">{{ "{:,}".format(planet.population) }}</td>
@@ -44,7 +42,6 @@
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
             <tr>
-                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Orbiting Planet</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Owner Planet</th>
@@ -53,7 +50,6 @@
         <tbody>
             {% for station in data.space_stations %}
             <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 8px;">{{ station.id }}</td>
                 <td style="padding: 8px; font-weight: bold;">{{ station.name }}</td>
                 <td style="padding: 8px;">{{ station.orbiting_planet_name if station.orbiting_planet_name else 'Deep Space' }}</td>
                 <td style="padding: 8px;">{{ station.owner_planet_name }}</td>
@@ -73,7 +69,6 @@
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
             <tr>
-                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Location</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Capacity</th>
@@ -83,7 +78,6 @@
         <tbody>
             {% for spaceport in data.spaceports %}
             <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 8px;">{{ spaceport.id }}</td>
                 <td style="padding: 8px; font-weight: bold;">{{ spaceport.name }}</td>
                 <td style="padding: 8px;">{{ spaceport.planet_name if spaceport.planet_name else spaceport.station_name if spaceport.station_name else 'Unknown' }}</td>
                 <td style="padding: 8px;">{{ spaceport.capacity if spaceport.capacity else 'N/A' }}</td>
@@ -104,7 +98,6 @@
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
             <tr>
-                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Type Name</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Capacity</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Range (km)</th>
@@ -113,7 +106,6 @@
         <tbody>
             {% for craft in data.spacecraft %}
             <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 8px;">{{ craft.id }}</td>
                 <td style="padding: 8px; font-weight: bold;">{{ craft.type_name }}</td>
                 <td style="padding: 8px;">{{ craft.capacity if craft.capacity else 'N/A' }}</td>
                 <td style="padding: 8px;">{{ "{:,}".format(craft.range_km) if craft.range_km else 'N/A' }}</td>
@@ -133,7 +125,6 @@
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
             <tr>
-                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Route</th>
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Distance (km)</th>
             </tr>
@@ -141,7 +132,6 @@
         <tbody>
             {% for route in data.routes %}
             <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 8px;">{{ route.id }}</td>
                 <td style="padding: 8px; font-weight: bold;">{{ route.origin_name }} → {{ route.destination_name }}</td>
                 <td style="padding: 8px;">{{ "{:,}".format(route.distance) if route.distance else 'N/A' }}</td>
             </tr>
