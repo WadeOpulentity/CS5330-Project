@@ -12,38 +12,62 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label for="spaceport" class="form-label">Search Spaceports</label>
-                        <input type="text" class="form-control" id="spaceport" name="spaceport" placeholder="Enter spaceport">
+                        <label for="spaceport" class="form-label">Select Spaceport</label>
+                        <select class="form-control" id="spaceport" name="spaceport">
+                            <option value="">Choose a spaceport...</option>
+                            {% for port in spaceports %}
+                                <option value="{{ port.id }}">{{ port.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="date" class="form-label">Day of Week (Optional)</label>
-                        <input type="text" class="form-control" id="date" name="date" placeholder="Enter date">
+                        <label for="day_of_week" class="form-label">Day of Week (Optional)</label>
+                        <select class="form-control" id="day_of_week" name="day_of_week">
+                            <option value="">Any Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Search</button>
                     <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
                 
-                {% if results %}
+                {% if searched %}
                 <div class="mt-4">
                     <h6>Search Results:</h6>
+                    {% if results %}
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
+                                    <th>Flight Number</th>
+                                    <th>Type</th>
+                                    <th>Route</th>
+                                    <th>Departure Time</th>
+                                    <th>Day of Week</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for result in results %}
                                 <tr>
-                                    <td>{{ result.id }}</td>
-                                    <td>{{ result.name }}</td>
+                                    <td>{{ result.flight_number }}</td>
+                                    <td>{{ result.flight_type }}</td>
+                                    <td>{{ result.route }}</td>
+                                    <td>{{ result.departure_time }}</td>
+                                    <td>{{ result.day_of_week }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+                    {% else %}
+                    <p style="color: #6c757d; font-style: italic;">No results found for the selected spaceport and criteria.</p>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

@@ -4,11 +4,12 @@ from app.models import (
     get_spaceport_id_by_name,
     get_routes_from_spaceport,
     get_flights_for_route_on_day,
+    get_all_spaceports,
 )
 from app.db import get_db
 import datetime
 
-bp = Blueprint('flight_finder', __name__, url_prefix='/flight_finder')
+flight_finder_bp = Blueprint('flight_finder', __name__)
 
 def find_itineraries(origin, destination, date_str, max_stops):
     try:
@@ -75,31 +76,71 @@ def find_itineraries(origin, destination, date_str, max_stops):
         result.append(leg_names)
     return result
 
-@bp.route('/', methods=['GET', 'POST'])
+@flight_finder_bp.route('/', methods=['GET', 'POST'])
 def flight_finder():
+    spaceports = get_all_spaceports()
     itineraries = []
+    searched = False
+    
     if request.method == 'POST':
         origin = request.form.get('origin', '').strip()
         destination = request.form.get('destination', '').strip()
         date_str = request.form.get('date', '').strip()
-        try:
-            max_stops = int(request.form.get('max_stops', 0))
-        except ValueError:
-            max_stops = 0
-            print(f"flight_finder, invalid max_stops: {request.form.get('max_stops')}")
-        raw_paths = find_itineraries(origin, destination, date_str, max_stops)
-        for idx in range(len(raw_paths)):
-            path = raw_paths[idx]
-            route_str = ''
-            for i, sp in enumerate(path):
-                if i > 0:
-                    route_str += ' → '
-                route_str += sp
-            flight_num = f"FN{idx+1:03d}"
-            itineraries.append({
-                'flight_number': flight_num,
-                'route': route_str,
-                'departure_time': 'TBD',
-                'arrival_time': 'TBD',
-            })
-    return render_template('queries/flight_finder.html', itineraries=itineraries)
+        max_stops = request.form.get('max_stops', '0')
+        
+        if origin and destination:
+            searched = True
+            # Convert date to day of week for our schedule system
+            if date_str:
+                try:
+                    travel_date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+                    day_of_week = travel_date.strftime('%A')
+                except ValueError:
+                    day_of_week = None
+            else:
+                day_of_week = None
+            
+            # Find direct flights first
+            origin_id = get_spaceport_id_by_name(origin)
+            dest_id = get_spaceport_id_by_name(destination)
+            
+            if origin_id and dest_id:
+                db = get_db()
+                cursor = db.cursor(dictionary=True)
+                
+                # Direct flights query
+                query = """
+                    SELECT 
+                        f.flight_number,
+                        f.departure_time,
+                        f.flight_time_hours,
+                        sc.type_name as aircraft,
+                        fs.day_of_week
+                    FROM Flights f
+                    JOIN Routes r ON f.route_id = r.id
+                    JOIN Spacecraft sc ON f.spacecraft_id = sc.id
+                    JOIN FlightSchedules fs ON f.flight_number = fs.flight_number
+                    WHERE r.origin_spaceport_id = %s 
+                    AND r.destination_spaceport_id = %s
+                """
+                
+                params = [origin_id, dest_id]
+                if day_of_week:
+                    query += " AND fs.day_of_week = %s"
+                    params.append(day_of_week)
+                
+                query += " ORDER BY f.departure_time"
+                cursor.execute(query, params)
+                direct_flights = cursor.fetchall()
+                
+                for flight in direct_flights:
+                    itineraries.append({
+                        'flight_number': flight['flight_number'],
+                        'route': f"{origin} → {destination}",
+                        'departure_time': str(flight['departure_time']),
+                        'arrival_time': f"{flight['flight_time_hours']}h flight",
+                        'aircraft': flight['aircraft'],
+                        'day_of_week': flight['day_of_week']
+                    })
+    
+    return render_template('queries/flight_finder.html', spaceports=spaceports, itineraries=itineraries, searched=searched)

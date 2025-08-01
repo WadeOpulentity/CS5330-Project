@@ -1,12 +1,15 @@
 from flask import Flask, render_template
 from .db import get_db
+from .models import get_dashboard_data
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = 'your-secret-key-change-this-in-production'
 
     @app.route('/')
     def index():
-        return render_template('index.html')
+        dashboard = get_dashboard_data()
+        return render_template('index.html', dashboard=dashboard)
 
     # Import and register blueprints for each module
     from .modules.data_entry.routes import data_entry_bp

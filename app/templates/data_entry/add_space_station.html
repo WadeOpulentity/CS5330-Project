@@ -15,8 +15,26 @@
                         <label for="name" class="form-label">Space Station Name</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="orbiting_planet_id" class="form-label">Orbiting Planet (Optional)</label>
+                        <select class="form-control" id="orbiting_planet_id" name="orbiting_planet_id">
+                            <option value="">Not orbiting any planet</option>
+                            {% for planet in planets %}
+                                <option value="{{ planet.id }}">{{ planet.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="owner_planet_id" class="form-label">Owner Planet *</label>
+                        <select class="form-control" id="owner_planet_id" name="owner_planet_id" required>
+                            <option value="">Choose owner planet...</option>
+                            {% for planet in planets %}
+                                <option value="{{ planet.id }}">{{ planet.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Space Station</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
                 </form>
             </div>
         </div>

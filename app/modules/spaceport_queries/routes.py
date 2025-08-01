@@ -1,24 +1,23 @@
 from flask import Blueprint, request, render_template
-from app.models import spaceport_arrivals_departures_query, date_and_spaceport_arrivals_departures_query
+from app.models import get_all_spaceports, get_spaceport_flights
 
 # TODO: Team Member 2 - Implement spaceport queries
-spaceport_queries_bp = Blueprint('spaceport_queries', __name__, template_folder='../../../templates/queries')
+spaceport_queries_bp = Blueprint('spaceport_queries', __name__)
 
 # TODO: Add spaceport query routes
 
-@spaceport_queries_bp('/', methods=['GET', 'POST'])
+@spaceport_queries_bp.route('/', methods=['GET', 'POST'])
 def spaceport_query():
+    spaceports = get_all_spaceports()
     results = []
+    searched = False
 
     if request.method == 'POST':
         spaceport_id = request.form.get('spaceport')
-        day_of_week = request.form.get('date')
+        day_of_week = request.form.get('day_of_week')
+        
+        if spaceport_id:
+            searched = True
+            results = get_spaceport_flights(spaceport_id, day_of_week if day_of_week else None)
 
-        # check that user inputed either both spaceport_id and day_of_week, or just spaceport_id
-        if spaceport_id and day_of_week:
-            results = date_and_spaceport_arrivals_departures_query(day_of_week, spaceport_id)
-        elif spaceport_id:
-            results = spaceport_arrivals_departures_query(spaceport_id)
-
-    
-    return render_template('queries/spaceport_query.html', results=results)
+    return render_template('queries/spaceport_query.html', spaceports=spaceports, results=results, searched=searched)
