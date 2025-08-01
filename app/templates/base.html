@@ -13,6 +13,22 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 5px;
+        }
+        .header-photo {
+            display: block;
+            margin: 0 auto 10px auto;
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .team-names {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            font-style: italic;
+            margin-bottom: 20px;
         }
         .container {
             max-width: 800px;
@@ -120,7 +136,9 @@
 </head>
 <body>
     <div class="container">
+        <img src="{{ url_for('static', filename='headphoto.jpg') }}" alt="Team Header Photo" class="header-photo">
         <h1>CS5330 Space Database Project</h1>
+        <div class="team-names">Wade, Manny, Alyson, McLean</div>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
