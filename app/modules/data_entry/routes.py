@@ -11,11 +11,26 @@ def add_planet():
         size = request.form.get('size')
         population = request.form.get('population')
         
+        # Validate required fields
+        if not name or not size or not population:
+            flash('All fields are required for planets!', 'error')
+            return redirect(url_for('data_entry.add_planet'))
+        
+        try:
+            size = int(size)
+            population = int(population)
+            if size <= 0 or population < 0:
+                flash('Size must be positive and population cannot be negative!', 'error')
+                return redirect(url_for('data_entry.add_planet'))
+        except ValueError:
+            flash('Size and population must be valid numbers!', 'error')
+            return redirect(url_for('data_entry.add_planet'))
+        
         db = get_db()
         cursor = db.cursor()
         try:
             cursor.execute("INSERT INTO Planets (name, size, population) VALUES (%s, %s, %s)", 
-                         (name, int(size) if size else None, int(population) if population else None))
+                         (name, size, population))
             db.commit()
             flash('Planet added successfully!', 'success')
         except Exception as e:
@@ -84,8 +99,26 @@ def add_route():
         destination_spaceport_id = request.form.get('destination_spaceport_id')
         distance = request.form.get('distance')
         
+        # Validate that origin and destination are different
+        if origin_spaceport_id == destination_spaceport_id:
+            flash('Origin and destination cannot be the same spaceport!', 'error')
+            return redirect(url_for('data_entry.add_route'))
+        
         db = get_db()
         cursor = db.cursor()
+        
+        # Check for existing route in either direction (bidirectional uniqueness)
+        cursor.execute("""
+            SELECT id FROM Routes 
+            WHERE (origin_spaceport_id = %s AND destination_spaceport_id = %s) 
+            OR (origin_spaceport_id = %s AND destination_spaceport_id = %s)
+        """, (origin_spaceport_id, destination_spaceport_id, destination_spaceport_id, origin_spaceport_id))
+        
+        existing_route = cursor.fetchone()
+        if existing_route:
+            flash('A route between these spaceports already exists!', 'error')
+            return redirect(url_for('data_entry.add_route'))
+        
         try:
             cursor.execute("INSERT INTO Routes (origin_spaceport_id, destination_spaceport_id, distance) VALUES (%s, %s, %s)", 
                          (origin_spaceport_id, destination_spaceport_id, int(distance) if distance else None))

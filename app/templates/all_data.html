@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}All Data - Space Management System{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 20px;">
+    <h1>All System Data</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+</div>
+
+<!-- Planets -->
+<div class="section">
+    <h2 style="color: black;">Planets</h2>
+    {% if data.planets %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Size (km)</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Population</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for planet in data.planets %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">{{ planet.id }}</td>
+                <td style="padding: 8px; font-weight: bold;">{{ planet.name }}</td>
+                <td style="padding: 8px;">{{ "{:,}".format(planet.size) }}</td>
+                <td style="padding: 8px;">{{ "{:,}".format(planet.population) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No planets found.</p>
+    {% endif %}
+</div>
+
+<!-- Space Stations -->
+<div class="section">
+    <h2 style="color: black;">Space Stations</h2>
+    {% if data.space_stations %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Orbiting Planet</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Owner Planet</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for station in data.space_stations %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">{{ station.id }}</td>
+                <td style="padding: 8px; font-weight: bold;">{{ station.name }}</td>
+                <td style="padding: 8px;">{{ station.orbiting_planet_name if station.orbiting_planet_name else 'Deep Space' }}</td>
+                <td style="padding: 8px;">{{ station.owner_planet_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No space stations found.</p>
+    {% endif %}
+</div>
+
+<!-- Spaceports -->
+<div class="section">
+    <h2 style="color: black;">Spaceports</h2>
+    {% if data.spaceports %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Location</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Capacity</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Fee Per Seat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for spaceport in data.spaceports %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">{{ spaceport.id }}</td>
+                <td style="padding: 8px; font-weight: bold;">{{ spaceport.name }}</td>
+                <td style="padding: 8px;">{{ spaceport.planet_name if spaceport.planet_name else spaceport.station_name if spaceport.station_name else 'Unknown' }}</td>
+                <td style="padding: 8px;">{{ spaceport.capacity if spaceport.capacity else 'N/A' }}</td>
+                <td style="padding: 8px;">${{ "%.2f"|format(spaceport.fee_per_seat) if spaceport.fee_per_seat else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No spaceports found.</p>
+    {% endif %}
+</div>
+
+<!-- Spacecraft -->
+<div class="section">
+    <h2 style="color: black;">Spacecraft</h2>
+    {% if data.spacecraft %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Type Name</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Capacity</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Range (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for craft in data.spacecraft %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">{{ craft.id }}</td>
+                <td style="padding: 8px; font-weight: bold;">{{ craft.type_name }}</td>
+                <td style="padding: 8px;">{{ craft.capacity if craft.capacity else 'N/A' }}</td>
+                <td style="padding: 8px;">{{ "{:,}".format(craft.range_km) if craft.range_km else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No spacecraft found.</p>
+    {% endif %}
+</div>
+
+<!-- Routes -->
+<div class="section">
+    <h2 style="color: black;">Routes</h2>
+    {% if data.routes %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">ID</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Route</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Distance (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for route in data.routes %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">{{ route.id }}</td>
+                <td style="padding: 8px; font-weight: bold;">{{ route.origin_name }} → {{ route.destination_name }}</td>
+                <td style="padding: 8px;">{{ "{:,}".format(route.distance) if route.distance else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No routes found.</p>
+    {% endif %}
+</div>
+
+<!-- Flights -->
+<div class="section">
+    <h2 style="color: black;">Flights</h2>
+    {% if data.flights %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Flight Number</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Route</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Aircraft</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Departure</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Duration</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in data.flights %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; font-weight: bold; color: #007bff;">{{ flight.flight_number }}</td>
+                <td style="padding: 8px;">{{ flight.origin_name }} → {{ flight.destination_name }}</td>
+                <td style="padding: 8px;">{{ flight.spacecraft_type }}</td>
+                <td style="padding: 8px;">{{ flight.departure_time if flight.departure_time else 'N/A' }}</td>
+                <td style="padding: 8px;">{{ (flight.flight_time_hours ~ 'h') if flight.flight_time_hours else 'N/A' }}</td>
+                <td style="padding: 8px;">{{ flight.schedule_days if flight.schedule_days else 'No schedule' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No flights found.</p>
+    {% endif %}
+</div>
+{% endblock %}

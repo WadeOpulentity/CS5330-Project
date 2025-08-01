@@ -16,12 +16,12 @@
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="size" class="form-label">Size (diameter in km)</label>
-                        <input type="number" class="form-control" id="size" name="size" placeholder="Enter planet diameter" min="1">
+                        <label for="size" class="form-label">Size (diameter in km) *</label>
+                        <input type="number" class="form-control" id="size" name="size" placeholder="Enter planet diameter" min="1" required>
                     </div>
                     <div class="mb-3">
-                        <label for="population" class="form-label">Population</label>
-                        <input type="number" class="form-control" id="population" name="population" placeholder="Enter population" min="0">
+                        <label for="population" class="form-label">Population *</label>
+                        <input type="number" class="form-control" id="population" name="population" placeholder="Enter population" min="0" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Planet</button>
                     <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>

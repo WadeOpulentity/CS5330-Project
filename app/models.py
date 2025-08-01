@@ -134,6 +134,77 @@ def get_dashboard_data():
     
     return dashboard
 
+def get_all_data():
+    """Get all data from all tables for the comprehensive view."""
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    
+    data = {}
+    
+    # Get all planets
+    cursor.execute("SELECT * FROM Planets ORDER BY name")
+    data['planets'] = cursor.fetchall()
+    
+    # Get all space stations with planet names
+    cursor.execute("""
+        SELECT ss.*, 
+               p1.name as orbiting_planet_name,
+               p2.name as owner_planet_name
+        FROM SpaceStations ss
+        LEFT JOIN Planets p1 ON ss.orbiting_planet_id = p1.id
+        LEFT JOIN Planets p2 ON ss.owner_planet_id = p2.id
+        ORDER BY ss.name
+    """)
+    data['space_stations'] = cursor.fetchall()
+    
+    # Get all spaceports with location info
+    cursor.execute("""
+        SELECT sp.*,
+               p.name as planet_name,
+               ss.name as station_name
+        FROM Spaceports sp
+        LEFT JOIN Planets p ON sp.planet_id = p.id
+        LEFT JOIN SpaceStations ss ON sp.station_id = ss.id
+        ORDER BY sp.name
+    """)
+    data['spaceports'] = cursor.fetchall()
+    
+    # Get all spacecraft
+    cursor.execute("SELECT * FROM Spacecraft ORDER BY type_name")
+    data['spacecraft'] = cursor.fetchall()
+    
+    # Get all routes with spaceport names
+    cursor.execute("""
+        SELECT r.*,
+               s1.name as origin_name,
+               s2.name as destination_name
+        FROM Routes r
+        JOIN Spaceports s1 ON r.origin_spaceport_id = s1.id
+        JOIN Spaceports s2 ON r.destination_spaceport_id = s2.id
+        ORDER BY s1.name, s2.name
+    """)
+    data['routes'] = cursor.fetchall()
+    
+    # Get all flights with detailed info
+    cursor.execute("""
+        SELECT f.*,
+               s1.name as origin_name,
+               s2.name as destination_name,
+               sc.type_name as spacecraft_type,
+               GROUP_CONCAT(fs.day_of_week ORDER BY fs.day_of_week) as schedule_days
+        FROM Flights f
+        JOIN Routes r ON f.route_id = r.id
+        JOIN Spaceports s1 ON r.origin_spaceport_id = s1.id
+        JOIN Spaceports s2 ON r.destination_spaceport_id = s2.id
+        JOIN Spacecraft sc ON f.spacecraft_id = sc.id
+        LEFT JOIN FlightSchedules fs ON f.flight_number = fs.flight_number
+        GROUP BY f.flight_number
+        ORDER BY f.flight_number
+    """)
+    data['flights'] = cursor.fetchall()
+    
+    return data
+
 def find_flights_on_route(origin_id, destination_id):
     """
     find the flights and the details about those flights on the rotue on.

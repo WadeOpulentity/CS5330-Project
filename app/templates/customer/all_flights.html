@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}All Available Flights - Space Management System{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 20px;">
+    <h1>All Available Flights</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+    <a href="{{ url_for('book_flight') }}" class="btn btn-primary" style="margin-left: 10px;">Book a Flight</a>
+</div>
+
+{% if flights %}
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+        <tr>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Flight #</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Route</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Departure</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Duration</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Aircraft</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Capacity</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Distance</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Total Fee</th>
+            <th style="padding: 15px; text-align: left; border-bottom: 2px solid #495057;">Schedule</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for flight in flights %}
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; font-weight: bold; color: #007bff;">{{ flight.flight_number }}</td>
+            <td style="padding: 10px;">{{ flight.origin }} → {{ flight.destination }}</td>
+            <td style="padding: 10px;">{{ flight.departure_time }}</td>
+            <td style="padding: 10px;">{{ flight.flight_time_hours }}h</td>
+            <td style="padding: 10px;">{{ flight.aircraft }}</td>
+            <td style="padding: 10px;">{{ flight.capacity }} seats</td>
+            <td style="padding: 10px;">{{ "{:,}".format(flight.distance) }} km</td>
+            <td style="padding: 10px; font-weight: bold; color: #28a745;">${{ "%.2f"|format(flight.total_fee) }}</td>
+            <td style="padding: 10px;">{{ flight.schedule_days if flight.schedule_days else 'No schedule' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p style="text-align: center; color: #6c757d; font-style: italic;">No flights available at this time.</p>
+{% endif %}
+{% endblock %}
