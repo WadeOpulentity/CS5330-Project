@@ -171,12 +171,22 @@ def add_flight():
             flash('Please select at least one day of the week', 'error')
             return redirect(url_for('data_entry.add_flight'))
         
+        # Validate flight time is positive
+        try:
+            flight_time = float(flight_time_hours) if flight_time_hours else 0
+            if flight_time <= 0:
+                flash('Flight time must be positive!', 'error')
+                return redirect(url_for('data_entry.add_flight'))
+        except ValueError:
+            flash('Flight time must be a valid number!', 'error')
+            return redirect(url_for('data_entry.add_flight'))
+        
         db = get_db()
         cursor = db.cursor()
         try:
             # Insert flight
             cursor.execute("INSERT INTO Flights (flight_number, route_id, spacecraft_id, departure_time, flight_time_hours) VALUES (%s, %s, %s, %s, %s)", 
-                         (flight_number, route_id, spacecraft_id, departure_time, float(flight_time_hours) if flight_time_hours else None))
+                         (flight_number, route_id, spacecraft_id, departure_time, flight_time))
             
             # Insert flight schedules for each selected day
             for day in days_of_week:

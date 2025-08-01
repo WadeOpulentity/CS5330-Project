@@ -207,24 +207,37 @@ def get_all_data():
 
 def find_flights_on_route(origin_id, destination_id):
     """
-    find the flights and the details about those flights on the rotue on.
+    find the flights and the details about those flights on the route.
     """
     db = get_db()
     cursor = db.cursor(dictionary=True)
 
-    # Joins to get details for each flight
+    # Joins to get details for each flight including schedule information
     query = """
         SELECT
             f.flight_number,
             f.departure_time,
-            f.flight_time_hours,
+            f.flight_time_hours AS flight_time,
             sc.type_name AS spacecraft_type,
             sc.capacity AS spacecraft_capacity,
-            r.distance
+            r.distance,
+            GROUP_CONCAT(fs.day_of_week ORDER BY 
+                CASE fs.day_of_week
+                    WHEN 'Monday' THEN 1
+                    WHEN 'Tuesday' THEN 2
+                    WHEN 'Wednesday' THEN 3
+                    WHEN 'Thursday' THEN 4
+                    WHEN 'Friday' THEN 5
+                    WHEN 'Saturday' THEN 6
+                    WHEN 'Sunday' THEN 7
+                END
+            ) AS departs_on_day
         FROM Flights f
         JOIN Routes r ON f.route_id = r.id
         JOIN Spacecraft sc ON f.spacecraft_id = sc.id
+        LEFT JOIN FlightSchedules fs ON f.flight_number = fs.flight_number
         WHERE r.origin_spaceport_id = %s AND r.destination_spaceport_id = %s
+        GROUP BY f.flight_number, f.departure_time, f.flight_time_hours, sc.type_name, sc.capacity, r.distance
     """
     cursor.execute(query, (origin_id, destination_id))
     flights = cursor.fetchall()
