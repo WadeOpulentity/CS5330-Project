@@ -1,78 +1,82 @@
-{% extends "base.html" %}
-
-{% block title %}Route Query - Space Management System{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Route Query - Space Management
+System{% endblock %} {% block content %}
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>Route Query</h5>
-            </div>
-            <div class="card-body">
-                <p>Find all flights between two spaceports.</p>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Route Query</h5>
+      </div>
+      <div class="card-body">
+        <p>Find all flights between two spaceports.</p>
 
-                <form method="POST">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label for="origin" class="form-label">Origin Spaceport</label>
-                            <select class="form-control" id="origin" name="origin">
-                                {% for port in spaceports %}
-                                    <option value="{{ port.id }}">{{ port.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-5">
-                            <label for="destination" class="form-label">Destination Spaceport</label>
-                            <select class="form-control" id="destination" name="destination">
-                                {% for port in spaceports %}
-                                    <option value="{{ port.id }}">{{ port.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">Search</button>
-                        </div>
-                    </div>
-                </form>
-
-                {% if flights %}
-                <div class="mt-4">
-                    <h6>Flights on Selected Route:</h6>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Flight Number</th>
-                                    <th>Departure Day</th>
-                                    <th>Flight Time (hours)</th>
-                                    <th>Spacecraft</th>
-                                    <th>Capacity</th>
-                                    <th>Distance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for flight in flights %}
-                                <tr>
-                                    <td>{{ flight.flight_number }}</td>
-                                    <td>{{ flight.departs_on_day }}</td>
-                                    <td>{{ flight.flight_time }}</td>
-                                    <td>{{ flight.spacecraft_type }}</td>
-                                    <td>{{ flight.spacecraft_capacity }}</td>
-                                    <td>{{ flight.distance }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                {% elif request.method == 'POST' %}
-                <div class="mt-4">
-                    <p>No flights found for the selected route.</p>
-                </div>
-                {% endif %}
+        <form method="POST">
+          <div class="row">
+            <div class="col-md-5">
+              <label for="origin" class="form-label">Origin Spaceport</label>
+              <select class="form-control" id="origin" name="origin">
+                {% for port in spaceports %}
+                <option value="{{ port.id }}">{{ port.name }}</option>
+                {% endfor %}
+              </select>
             </div>
+            <div class="col-md-5">
+              <label for="destination" class="form-label"
+                >Destination Spaceport</label
+              >
+              <select class="form-control" id="destination" name="destination">
+                {% for port in spaceports %}
+                <option value="{{ port.id }}">{{ port.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-primary w-100">
+                Search
+              </button>
+              <a href="{{ url_for('index') }}" class="btn btn-secondary"
+                >Back to Home</a
+              >
+            </div>
+          </div>
+        </form>
+
+        {% if flights %}
+        <div class="mt-4">
+          <h6>Flights on Selected Route:</h6>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Flight Number</th>
+                  <th>Departure Day</th>
+                  <th>Flight Time (hours)</th>
+                  <th>Spacecraft</th>
+                  <th>Capacity</th>
+                  <th>Distance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for flight in flights %}
+                <tr>
+                  <td>{{ flight.flight_number }}</td>
+                  <td>{{ flight.departs_on_day }}</td>
+                  <td>{{ flight.flight_time }}</td>
+                  <td>{{ flight.spacecraft_type }}</td>
+                  <td>{{ flight.spacecraft_capacity }}</td>
+                  <td>{{ flight.distance }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
+        {% elif request.method == 'POST' %}
+        <div class="mt-4">
+          <p>No flights found for the selected route.</p>
+        </div>
+        {% endif %}
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
