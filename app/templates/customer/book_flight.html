@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Book Flight - Space Management System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5>Book a Flight</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="passenger_name" class="form-label">Passenger Name *</label>
+                        <input type="text" class="form-control" id="passenger_name" name="passenger_name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="flight_number" class="form-label">Select Flight *</label>
+                        <select class="form-control" id="flight_number" name="flight_number" required>
+                            <option value="">Choose a flight...</option>
+                            {% for flight in flights %}
+                            <option value="{{ flight.flight_number }}">
+                                {{ flight.flight_number }} - {{ flight.origin }} → {{ flight.destination }} 
+                                ({{ flight.departure_time }}, {{ flight.aircraft }}, ${{ "%.2f"|format(flight.total_fee) }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="seats" class="form-label">Number of Seats *</label>
+                        <input type="number" class="form-control" id="seats" name="seats" value="1" min="1" max="10" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Book Flight</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+                    <a href="{{ url_for('view_all_flights') }}" class="btn btn-info" style="margin-left: 10px;">View All Flights</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if flights %}
+<div style="margin-top: 30px;">
+    <h3 style="color: black;">Available Flights</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead style="background-color: #f8f9fa; color: black; font-weight: bold;">
+            <tr>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Flight #</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Route</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Departure</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Aircraft</th>
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Total Fee</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px; font-weight: bold; color: #007bff;">{{ flight.flight_number }}</td>
+                <td style="padding: 8px;">{{ flight.origin }} → {{ flight.destination }}</td>
+                <td style="padding: 8px;">{{ flight.departure_time }}</td>
+                <td style="padding: 8px;">{{ flight.aircraft }}</td>
+                <td style="padding: 8px; font-weight: bold; color: #28a745;">${{ "%.2f"|format(flight.total_fee) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
