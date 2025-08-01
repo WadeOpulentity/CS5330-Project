@@ -6,6 +6,14 @@
 </div>
 
 <div class="section">
+    <h2>Customer Buttons</h2>
+    <ul>
+        <li><a href="{{ url_for('book_flight') }}">Book Flight</a></li>
+        <li><a href="{{ url_for('view_all_flights') }}">View All Available Flights</a></li>
+    </ul>
+</div>
+
+<div class="section">
     <h2>Data Entry</h2>
     <ul>
         <li><a href="{{ url_for('data_entry.add_planet') }}">Add Planet</a></li>
@@ -23,14 +31,6 @@
         <li><a href="{{ url_for('spaceport_queries.spaceport_query') }}">Spaceport Query</a></li>
         <li><a href="{{ url_for('route_queries.route_query') }}">Route Query</a></li>
         <li><a href="{{ url_for('flight_finder.flight_finder') }}">Flight Finder</a></li>
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Customer Buttons</h2>
-    <ul>
-        <li><a href="{{ url_for('book_flight') }}">Book Flight</a></li>
-        <li><a href="{{ url_for('view_all_flights') }}">View All Available Flights</a></li>
     </ul>
 </div>
 
